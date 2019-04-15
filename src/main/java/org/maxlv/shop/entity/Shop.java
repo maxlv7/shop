@@ -21,10 +21,22 @@ public class Shop {
     private Integer enableStatus;
     private String advice;
 
-//    private List<ShopAuthMap> staffList;
+    //    private List<ShopAuthMap> staffList;
+//    地区
     private Area area;
+    //所属者
+    private PersonInfo owner;
     private ShopCategory shopCategory;
     private ShopCategory parentCategory;
+
+
+    public void setOwner(PersonInfo owner) {
+        this.owner = owner;
+    }
+
+    public PersonInfo getOwner() {
+        return owner;
+    }
 
     public Long getShopId() {
         return shopId;
