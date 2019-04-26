@@ -13,6 +13,17 @@ public class ShopCategory {
     private Date lastEditTime;
     private Long parentId;
 
+    //父类
+    private ShopCategory parent;
+
+    public ShopCategory getParent() {
+        return parent;
+    }
+
+    public void setParent(ShopCategory parent) {
+        this.parent = parent;
+    }
+
     public Long getShopCategoryId() {
         return shopCategoryId;
     }
