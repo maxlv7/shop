@@ -3,9 +3,9 @@ package org.maxlv.shop.service;
 import org.maxlv.shop.dto.ShopExecution;
 import org.maxlv.shop.entity.Shop;
 
-import java.io.File;
+import java.io.InputStream;
 
 
 public interface ShopService {
-    ShopExecution addShop(Shop shop, File shopImg);
+    ShopExecution addShop(Shop shop, InputStream shopImg,String filename);
 }

@@ -18,11 +18,11 @@ public class ImageUtil {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
     //生成缩略图
-    public static String generateThumbnail(File file, String targetAddr) throws IOException {
+    public static String generateThumbnail(InputStream inputStream, String targetAddr,String filename) throws IOException {
         //生成随机名
         String randName = getRandomFileName();
         //获取后缀名
-        String ext = getFileExt(file);
+        String ext = getFileExt(filename);
         //创建文件夹
         mkdir(targetAddr);
         //创建真正的文件
@@ -30,13 +30,14 @@ public class ImageUtil {
         File dest = new File(PathUtil.getImgBasePath() + realPath);
 
         if (dest.createNewFile()) {
-            FileInputStream in = new FileInputStream(file);
             FileOutputStream out = new FileOutputStream(dest);
             int n;// 每次读取的字节长度
             byte[] read = new byte[1024];// 存储每次读取的内容
-            while ((n = in.read(read)) != -1) {
+            while ((n = inputStream.read(read)) != -1) {
                 out.write(read, 0, n);// 将读取的内容，写入到输出流当中
             }
+            inputStream.close();
+            out.close();
         }
         return realPath;
     }
@@ -60,8 +61,8 @@ public class ImageUtil {
     }
 
     //获取文件后缀名
-    private static String getFileExt(File file) {
-        return file.getName().substring(file.getName().indexOf("."));
+    private static String getFileExt(String filename) {
+        return filename.substring(filename.indexOf("."));
     }
 
 }

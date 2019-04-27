@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 @Service
@@ -24,7 +24,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public ShopExecution addShop(Shop shop, File shopImg) {
+    public ShopExecution addShop(Shop shop, InputStream shopImg, String filename) {
         if (shop == null) {
             //必需是这个异常,这样才能在错误发生时终止事务的执行,保证操作的原子性
             throw new RuntimeException();
@@ -41,27 +41,27 @@ public class ShopServiceImpl implements ShopService {
                 throw new RuntimeException();
             } else {
                 //把文件写入本地文件夹中
-                addShopImg(shop, shopImg);
+                addShopImg(shop, shopImg, filename);
                 //更新数据库里面的图片地址,这时候数据库已经有了店铺的记录
                 try {
                     int effectednum = shopDao.updateShop(shop);
-                    if (effectednum<=0){
+                    if (effectednum <= 0) {
                         throw new RuntimeException("创建数据库图片地址失败!");
                     }
-                }catch (Exception e){
-                    throw new RuntimeException("addShopImg error:"+e.getMessage());
+                } catch (Exception e) {
+                    throw new RuntimeException("addShopImg error:" + e.getMessage());
                 }
                 System.out.println("shop img is" + shop.getShopImg());
             }
         } catch (Exception e) {
             throw new RuntimeException("addShopImg error:" + e.getMessage());
         }
-        return new ShopExecution(ShopStateEnum.CHECK,shop);
+        return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
 
-    private void addShopImg(Shop shop, File ShopImg) throws IOException {
+    private void addShopImg(Shop shop, InputStream inputStream, String filename) throws IOException {
         String dest = PathUtil.getShopImgPath(shop.getShopId());
-        String shopImgAddr = ImageUtil.generateThumbnail(ShopImg, dest);
+        String shopImgAddr = ImageUtil.generateThumbnail(inputStream, dest, filename);
         shop.setShopImg(shopImgAddr);
     }
 }
