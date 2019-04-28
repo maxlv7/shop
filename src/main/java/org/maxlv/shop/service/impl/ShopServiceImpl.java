@@ -51,7 +51,6 @@ public class ShopServiceImpl implements ShopService {
                 } catch (Exception e) {
                     throw new RuntimeException("addShopImg error:" + e.getMessage());
                 }
-                System.out.println("shop img is" + shop.getShopImg());
             }
         } catch (Exception e) {
             throw new RuntimeException("addShopImg error:" + e.getMessage());
